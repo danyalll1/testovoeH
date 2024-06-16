@@ -12,7 +12,7 @@ const itemsInCart = ref<String>(' ')
 const STORE  = useUserCards()
 
 function clickHandlerLike(id:number) {
-
+  console.log(STORE)
   if(!STORE.likesInStorage){
     STORE.setInStorage('likes',id)
     localStorage.setItem('likes',`${id}`)
@@ -50,8 +50,11 @@ function clickHandlerCart(id:number){
 
 onMounted(()=>{
   STORE.getLikesFromStorage()
-    if(!STORE.likesInStorage)
+    if(!STORE.likesInStorage){
       STORE.initStorage('likes')
+      STORE.getLikesFromStorage()
+    }
+
   itemsInCart.value = localStorage.getItem('cart')
 })
 
@@ -77,12 +80,12 @@ onMounted(()=>{
         </div>
         <div class="card__prices-price">{{ item.price.current_price }}</div>
       </div>
-      <svg @click="clickHandlerLike(item.id)" :class="{active : STORE.likesInStorage.includes(`${item.id}`)}" class="icon card__icon card__icon_like">
+      <svg @click="clickHandlerLike(item.id)" :class="{active : STORE.includesLikes(item.id)}" class="icon card__icon card__icon_like">
         <use href="/src/assets/sprite.svg#1"/>
       </svg>
       <div @click="clickHandlerCart(item.id)" class="card__item-container">
 
-        <svg v-if="itemsInCart.includes(`${item.id}`)" class="icon card__icon card__icon_grab">
+        <svg v-if="true" class="icon card__icon card__icon_grab">
           <use href="/src/assets/sprite.svg#2"/>
         </svg>
         <svg v-else class="icon card__icon card__icon_cart">

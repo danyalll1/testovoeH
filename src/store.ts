@@ -19,6 +19,14 @@ export const useUserCards = defineStore('userCards', () => {
         setInStorage(key, ' ')
     }
 
+    const includesLikes = (value)=>{
+        return likesInStorage.value.includes(`${value}`)
+    }
 
-    return { likesInStorage, itemsInCart, setInStorage , getLikesFromStorage, initStorage }
+
+    const includesCart = (value)=>{
+        return itemsInCart.value.includes(`${value}`)
+    }
+
+    return { likesInStorage, itemsInCart, setInStorage , getLikesFromStorage, initStorage, includesLikes , includesCart }
 })
