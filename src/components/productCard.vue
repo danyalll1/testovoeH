@@ -61,7 +61,7 @@ onMounted(() => {
     <div v-if="item.price.old_price" class="card__inStockFlag">Скидка</div>
     <div class="card__top">
       <div class="card__image-container">
-        <img class="card__image" :src="'/src/assets/'+ item.image.url" alt="item image">
+        <img class="card__image" :src="`${item.image.url}`" alt="item image">
       </div>
     </div>
     <div class="card__bottom">
