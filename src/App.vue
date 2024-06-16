@@ -2,12 +2,12 @@
 import CatalogGrid from "./components/catalogGrid.vue";
 import itemsData from "./assets/json/items.json"
 import materialsData from "./assets/json/materials.json"
-import {ref, onMounted, computed} from "vue";
+import {ref, computed ,onMounted} from "vue";
 import {cardData, Options} from './interfaces.ts'
 import DropDown from "./components/dropDown.vue";
 
 
-const items = ref<cardData[]>(itemsData)
+const items = ref<any[]>(itemsData)
 
 const filterMaterialId = ref<number | null>(null);
 const sortOrder = ref<'default' | 'asc' | 'desc'>('default');
@@ -21,22 +21,12 @@ const orderFilters: Options[] = [
     option: 'asc',
   },
 ]
-const orderMaterialFilters: Options[] = [
-  {
-    text: 'Все',
-    option: 0,
-  },
-  {
-    text: 'Материал 1',
-    option: 1,
-  },
-  {
-    text: 'Материал 2',
-    option: 2,
-  },
-]
+const orderMaterialFilters: Options[] = materialsData.map(item => ({
+  text: item.name,
+  option: parseInt(item.id, 10),
+}));
 
-const filteredItems = computed((): CardData[] => {
+const filteredItems = computed((): cardData[] => {
   let filtered = items.value;
 
   if (Number(filterMaterialId.value) !== 0) {
@@ -44,19 +34,22 @@ const filteredItems = computed((): CardData[] => {
   }
 
   if (sortOrder.value === 'desc') {
-    filtered = filtered.sort((a, b) => a.price.current_price - b.price.current_price);
+    filtered = filtered.sort((a:any, b:any) => a.price.current_price - b.price.current_price);
   }
   else if (sortOrder.value === 'asc') {
-    filtered = filtered.sort((a, b) => b.price.current_price - a.price.current_price);
+    filtered = filtered.sort((a:any, b:any) => b.price.current_price - a.price.current_price);
   }
 
   return filtered;
 });
 
-function setMaterial(option: number) {
-  console.log(option)
-  filterMaterialId.value = option
-}
+onMounted(()=>{
+ orderMaterialFilters.push({
+   option: 0,
+   text:'Все'
+ })
+})
+
 </script>
 
 <template>

@@ -1,62 +1,57 @@
 <script setup lang="ts">
 import {cardData} from '../interfaces.ts'
-import {computed, ref, onMounted} from "vue";
+import {onMounted} from "vue";
 import {useUserCards} from "../store.ts";
 
 defineProps<{
   item: cardData
 }>()
 
+const STORE = useUserCards()
 
-const itemsInCart = ref<String>(' ')
-const STORE  = useUserCards()
-
-function clickHandlerLike(id:number) {
-  if(!STORE.likesInStorage){
-    STORE.setInStorage('likes',id)
-    localStorage.setItem('likes',`${id}`)
-  }
-  else{
-    if(STORE.likesInStorage.includes(id)){
-      STORE.setInStorage('likes',STORE.likesInStorage.replace(`${id}`, ''))
+function clickHandlerLike(id: number) {
+  if (!STORE.likesInStorage) {
+    STORE.setInStorage('likes', id)
+    localStorage.setItem('likes', `${id}`)
+  } else {
+    if (STORE.likesInStorage.includes(id)) {
+      STORE.setInStorage('likes', STORE.likesInStorage.replace(`${id}`, ''))
       STORE.likesInStorage = STORE.likesInStorage.replace(`${id}`, '')
-    }
-    else{
+    } else {
       STORE.likesInStorage += `${id}`
-      STORE.setInStorage('likes',STORE.likesInStorage)
+      STORE.setInStorage('likes', STORE.likesInStorage)
 
     }
   }
 }
-function clickHandlerCart(id:number){
-  if(!STORE.itemsInCart){
-    STORE.setInStorage('cart',`${id}`)
+
+function clickHandlerCart(id: number) {
+  if (!STORE.itemsInCart) {
+    STORE.setInStorage('cart', `${id}`)
     STORE.itemsInCart = `${id}`
-  }
-  else{
-    if(STORE.itemsInCart.includes(id)){
-      STORE.setInStorage('cart',STORE.itemsInCart.replace(`${id}`, ''))
-      STORE.itemsInCart = STORE.itemsInCart .replace(`${id}`, '')
-    }
-    else{
-      STORE.itemsInCart  += `${id},`
-      STORE.setInStorage('cart',STORE.itemsInCart)
+  } else {
+    if (STORE.itemsInCart.includes(id)) {
+      STORE.setInStorage('cart', STORE.itemsInCart.replace(`${id}`, ''))
+      STORE.itemsInCart = STORE.itemsInCart.replace(`${id}`, '')
+    } else {
+      STORE.itemsInCart += `${id},`
+      STORE.setInStorage('cart', STORE.itemsInCart)
     }
   }
 }
 
-onMounted(()=>{
+onMounted(() => {
   STORE.getLikesFromStorage()
-    if(!STORE.likesInStorage){
-      STORE.initStorage('likes')
-      STORE.getLikesFromStorage()
-    }
+  if (!STORE.likesInStorage) {
+    STORE.initStorage('likes')
+    STORE.getLikesFromStorage()
+  }
 
   STORE.getItemsFromStorage()
-    if(!STORE.itemsInCart){
-      STORE.initStorage('cart')
-      STORE.getLikesFromStorage()
-    }
+  if (!STORE.itemsInCart) {
+    STORE.initStorage('cart')
+    STORE.getLikesFromStorage()
+  }
 })
 
 </script>
@@ -66,7 +61,7 @@ onMounted(()=>{
     <div v-if="item.price.old_price" class="card__inStockFlag">Скидка</div>
     <div class="card__top">
       <div class="card__image-container">
-        <img class="card__image" :src="'/src/assets/images/'+ item.image.url" alt="item image">
+        <img class="card__image" :src="'/src/assets/'+ item.image.url" alt="item image">
       </div>
     </div>
     <div class="card__bottom">
@@ -81,7 +76,8 @@ onMounted(()=>{
         </div>
         <div class="card__prices-price">{{ item.price.current_price }}</div>
       </div>
-      <svg @click="clickHandlerLike(item.id)" :class="{active : STORE.includesLikes(item.id)}" class="icon card__icon card__icon_like">
+      <svg @click="clickHandlerLike(item.id)" :class="{active : STORE.includesLikes(item.id)}"
+           class="icon card__icon card__icon_like">
         <use href="/src/assets/sprite.svg#1"/>
       </svg>
       <div @click="clickHandlerCart(item.id)" class="card__item-container">

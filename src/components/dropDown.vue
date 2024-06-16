@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {ref} from "vue";
-import {Options} from './../interfaces.ts'
+import {Options} from '../interfaces.ts'
 
 const props = defineProps<{
   defaultFilter?: String
@@ -20,7 +20,7 @@ function dropOpen() {
   isOpen.value = !isOpen.value
 }
 
-function selectOptions(option) {
+function selectOptions(option:any) {
   emit('update:modelValue', option.option);
   activeOption.value = option.text
   dropOpen
@@ -45,7 +45,6 @@ function selectOptions(option) {
             @click="selectOptions(option)"
             class="dropDown__options-item"
             v-for="option in options"
-            :key="option.value"
         >
           {{ option.text }}
         </div>

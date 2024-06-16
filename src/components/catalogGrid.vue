@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {cardData} from '../interfaces.ts'
 import ProductCard from "./productCard.vue";
-import {computed} from "vue";
+
 
 defineProps<{
   items: cardData[]

@@ -23,4 +23,4 @@ interface Options {
     option: String | Number | null
 }
 
-export { cardData, filter ,Options}
+export type  {cardData , filter , Options}
