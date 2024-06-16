@@ -12,7 +12,6 @@ const itemsInCart = ref<String>(' ')
 const STORE  = useUserCards()
 
 function clickHandlerLike(id:number) {
-  console.log(STORE)
   if(!STORE.likesInStorage){
     STORE.setInStorage('likes',id)
     localStorage.setItem('likes',`${id}`)
@@ -30,20 +29,18 @@ function clickHandlerLike(id:number) {
   }
 }
 function clickHandlerCart(id:number){
-  let cart:string = localStorage.getItem('cart')
-  if(!cart){
-    localStorage.setItem('cart',`${id},`)
-    itemsInCart.value = `${id},`
+  if(!STORE.itemsInCart){
+    STORE.setInStorage('cart',`${id}`)
+    STORE.itemsInCart = `${id}`
   }
   else{
-    if(cart.includes(id)){
-      localStorage.setItem('cart',cart.replace(`${id},`, ''))
-      itemsInCart.value = cart.replace(`${id},`, '')
+    if(STORE.itemsInCart.includes(id)){
+      STORE.setInStorage('cart',STORE.itemsInCart.replace(`${id}`, ''))
+      STORE.itemsInCart = STORE.itemsInCart .replace(`${id}`, '')
     }
     else{
-      cart += `${id},`
-      localStorage.setItem('cart',cart)
-      itemsInCart.value = cart
+      STORE.itemsInCart  += `${id},`
+      STORE.setInStorage('cart',STORE.itemsInCart)
     }
   }
 }
@@ -55,7 +52,11 @@ onMounted(()=>{
       STORE.getLikesFromStorage()
     }
 
-  itemsInCart.value = localStorage.getItem('cart')
+  STORE.getItemsFromStorage()
+    if(!STORE.itemsInCart){
+      STORE.initStorage('cart')
+      STORE.getLikesFromStorage()
+    }
 })
 
 </script>
@@ -84,8 +85,7 @@ onMounted(()=>{
         <use href="/src/assets/sprite.svg#1"/>
       </svg>
       <div @click="clickHandlerCart(item.id)" class="card__item-container">
-
-        <svg v-if="true" class="icon card__icon card__icon_grab">
+        <svg v-if="STORE.includesCart(item.id)" class="icon card__icon card__icon_grab">
           <use href="/src/assets/sprite.svg#2"/>
         </svg>
         <svg v-else class="icon card__icon card__icon_cart">

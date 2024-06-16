@@ -8,9 +8,9 @@ export const useUserCards = defineStore('userCards', () => {
     const getLikesFromStorage = () =>  {
         likesInStorage.value = localStorage.getItem('likes')
     }
-    const getItemsFromStorage = () =>  likesInStorage.value = localStorage.getItem('cart')
+    const getItemsFromStorage = () =>  itemsInCart.value = localStorage.getItem('cart')
 
-    const setInStorage= (key,id) =>{
+    const setInStorage= (key:number,id:number) =>{
         localStorage.setItem(`${key}`, `${id}`)
         getLikesFromStorage()
     }
@@ -23,10 +23,9 @@ export const useUserCards = defineStore('userCards', () => {
         return likesInStorage.value.includes(`${value}`)
     }
 
-
     const includesCart = (value)=>{
         return itemsInCart.value.includes(`${value}`)
     }
 
-    return { likesInStorage, itemsInCart, setInStorage , getLikesFromStorage, initStorage, includesLikes , includesCart }
+    return { likesInStorage, itemsInCart, setInStorage , getLikesFromStorage, getItemsFromStorage ,initStorage, includesLikes , includesCart }
 })

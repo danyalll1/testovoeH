@@ -17,4 +17,10 @@ interface filter{
     direction: Number
 }
 
-export { cardData, filter}
+interface Options {
+
+    text:String
+    option: String | Number | null
+}
+
+export { cardData, filter ,Options}
