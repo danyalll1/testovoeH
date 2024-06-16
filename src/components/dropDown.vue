@@ -3,7 +3,7 @@ import {ref} from "vue";
 import {Options} from './../interfaces.ts'
 
 const props = defineProps<{
-  defaultFilter: String
+  defaultFilter?: String
   title: String
   options: Options[]
   modelValue: String | number

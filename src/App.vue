@@ -86,6 +86,7 @@ function setMaterial(option: number) {
 
 <style lang="sass" scoped>
 .container
+  overflow: hidden
   max-width: 1440px
   padding: 32px
   margin: 0 auto
@@ -96,19 +97,32 @@ function setMaterial(option: number) {
     display: flex
     gap: 24px
     margin-bottom: 64px
+    @media screen and (max-width: 650px)
+      flex-direction: column
 
   &__title
     font-size: 36px
     margin-bottom: 32px
+    @media screen and (max-width: 650px)
+      font-size: 24px
 
   &__breadcrumbs
     display: flex
     gap: 8px
     margin-bottom: 32px
+    @media screen and (max-width: 650px)
+      gap: 4px
+      overflow: scroll
 
     &-item
       font-size: 16px
       color: #727783
+      max-height: 18px
+      text-wrap: nowrap
+      @media screen and (max-width: 650px)
+        font-size: 16px
+        width: max-content
+
 
       &:after
         margin-left: 8px
